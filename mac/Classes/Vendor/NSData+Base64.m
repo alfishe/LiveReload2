@@ -81,7 +81,7 @@ void *NewBase64Decode(
 	size_t length,
 	size_t *outputLength)
 {
-	if (length == -1)
+	if (length == 0xFFFFFFFFFFFFFFFF)
 	{
 		length = strlen(inputBuffer);
 	}

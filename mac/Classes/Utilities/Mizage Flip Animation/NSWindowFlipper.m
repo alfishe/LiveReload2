@@ -14,7 +14,7 @@
 
 @synthesize toWindow,duration,shadowed;
 
--(id)initWithToWindow:(NSWindow*)ToWindow flipDuration:(CFTimeInterval)Duration shadowed:(BOOL)Shadowed;
+-(id)initWithToWindow:(NSWindow*)ToWindow flipDuration:(CFTimeInterval)Duration shadowed:(BOOL)Shadowed
 {
   if(self = [super init])
   {

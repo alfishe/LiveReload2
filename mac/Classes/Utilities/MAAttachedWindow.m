@@ -817,7 +817,8 @@
 
 
 - (void)setBorderWidth:(float)value {
-    if (borderWidth != value) {
+    // Compare taking into account float number precision
+    if (fabs(borderWidth - value) > 0.001) {
         float maxBorderWidth = viewMargin;
         if (value <= maxBorderWidth) {
             borderWidth = value;
@@ -836,7 +837,8 @@
 
 
 - (void)setViewMargin:(float)value {
-    if (viewMargin != value) {
+    // Compare taking into account float number precision
+    if (fabs(viewMargin - value) > 0.001) {
         viewMargin = MAX(value, 0.0);
 
         // Adjust cornerRadius appropriately (which will also adjust arrowBaseWidth).
@@ -872,7 +874,8 @@
 
 
 - (void)setArrowHeight:(float)value {
-    if (arrowHeight != value) {
+    // Compare taking into account float number precision
+    if (fabs(arrowHeight - value) > 0.001) {
         arrowHeight = value;
 
         [self _redisplay];
@@ -886,7 +889,8 @@
 
 
 - (void)setHasArrow:(float)value {
-    if (hasArrow != value) {
+    // Compare taking into account float number precision
+    if (fabs(hasArrow - value) > 0.001) {
         hasArrow = value;
 
         [self _updateBackground];
@@ -920,7 +924,8 @@
 
 
 - (void)setDrawsRoundCornerBesideArrow:(float)value {
-    if (drawsRoundCornerBesideArrow != value) {
+    // Compare taking into account float number precision
+    if (fabs(drawsRoundCornerBesideArrow - value) > 0.001) {
         drawsRoundCornerBesideArrow = value;
 
         [self _redisplay];

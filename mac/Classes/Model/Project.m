@@ -756,14 +756,15 @@ skipGuessing:
 }
 
 - (void)setFullPageReloadDelay:(NSTimeInterval)fullPageReloadDelay {
-    if (_fullPageReloadDelay != fullPageReloadDelay) {
+    
+    if (fabs(_fullPageReloadDelay - fullPageReloadDelay) > 0.001) {
         _fullPageReloadDelay = fullPageReloadDelay;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged" object:self];
     }
 }
 
 - (void)setEventProcessingDelay:(NSTimeInterval)eventProcessingDelay {
-    if (_eventProcessingDelay != eventProcessingDelay) {
+    if (fabs(_eventProcessingDelay - eventProcessingDelay) > 0.001) {
         _eventProcessingDelay = eventProcessingDelay;
         _monitor.eventProcessingDelay = _eventProcessingDelay;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged" object:self];
@@ -773,7 +774,7 @@ skipGuessing:
 - (void)setPostProcessingGracePeriod:(NSTimeInterval)postProcessingGracePeriod {
     if (postProcessingGracePeriod < 0.01)
         return;
-    if (_postProcessingGracePeriod != postProcessingGracePeriod) {
+    if (fabs(_postProcessingGracePeriod - postProcessingGracePeriod) > 0.001) {
         _postProcessingGracePeriod = postProcessingGracePeriod;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SomethingChanged" object:self];
     }
