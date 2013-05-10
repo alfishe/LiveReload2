@@ -620,11 +620,9 @@
 			isa = PBXGroup;
 			children = (
 				4303A59415B53B31009D732A /* LiveReload.entitlements */,
-				43059221151E8FA400CC3F88 /* CoreServices.framework */,
 				823DDE2D13F8DA3100529AD2 /* Classes */,
 				4303A4BC15B513FD009D732A /* nodeapp */,
 				43C0368513CA191C00A01305 /* LiveReload.icns */,
-				43361D4513C30D1400C0E589 /* libicucore.dylib */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -662,6 +660,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43361D4513C30D1400C0E589 /* libicucore.dylib */,
+				43059221151E8FA400CC3F88 /* CoreServices.framework */,
 				4303A4B815B3B438009D732A /* Sparkle.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
