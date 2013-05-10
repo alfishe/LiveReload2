@@ -171,35 +171,67 @@ static UserScriptManager *sharedUserScriptManager = nil;
 - (id)init {
     self = [super init];
     if (self) {
-        _monitor = [[FSMonitor alloc] initWithPath:ATUserScriptsDirectory()];
-        _monitor.delegate = self;
-        _monitor.running = YES;
+        NSString* scriptsDirectory = ATUserScriptsDirectory();
+        
+        if (scriptsDirectory != nil && [scriptsDirectory length] > 0)
+        {
+            _monitor = [[FSMonitor alloc] initWithPath:scriptsDirectory];
+            _monitor.delegate = self;
+            _monitor.running = YES;
+        }
     }
+
     return self;
 }
 
-- (NSArray *)userScripts {
-    NSError *error = nil;
-    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:ATUserScriptsDirectory() isDirectory:YES] includingPropertiesForKeys:[NSArray array] options:NSDirectoryEnumerationSkipsHiddenFiles|NSDirectoryEnumerationSkipsPackageDescendants|NSDirectoryEnumerationSkipsSubdirectoryDescendants error:&error];
-    
-    NSMutableArray *result = [NSMutableArray array];
-    for (NSURL *pathUrl in files) {
-        [result addObject:[[[UserScript alloc] initWithPath:[pathUrl path]] autorelease]];
+- (void)dealloc
+{
+    if (_monitor != nil)
+    {
+        [_monitor release];
+        _monitor = nil;
     }
+    
+    [super dealloc];
+}
+
+- (NSArray *)userScripts {
+    NSMutableArray *result = [NSMutableArray array];
+    
+    NSError *error = nil;
+    
+    NSString* scriptsDirectory = ATUserScriptsDirectory();
+    
+    if (scriptsDirectory != nil && [scriptsDirectory length] > 0)
+    {
+        NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:scriptsDirectory isDirectory:YES] includingPropertiesForKeys:[NSArray array] options:NSDirectoryEnumerationSkipsHiddenFiles|NSDirectoryEnumerationSkipsPackageDescendants|NSDirectoryEnumerationSkipsSubdirectoryDescendants error:&error];
+    
+    
+        for (NSURL *pathUrl in files) {
+            [result addObject:[[[UserScript alloc] initWithPath:[pathUrl path]] autorelease]];
+        }
+    }
+
     return result;
 }
 
 - (void)revealUserScriptsFolderSelectingScript:(UserScript *)selectedScript {
     NSString *path = ATUserScriptsDirectory();
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        NSError *error = nil;
-        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:[NSDictionary dictionary] error:&error];
-        if (error) {
-            [[NSAlert alertWithMessageText:@"You need to create a Scripts folder yourself" defaultButton:@"OK" alternateButton:@"No way!" otherButton:nil informativeTextWithFormat:@"Sorry, Mac OS X 10.7 cannot create a scripts folder automatically. This app cannot do it either because of the sandbox. Please create folder %@ yourself, and try again.", path] runModal];
+    
+    if (path != nil && [path length] > 0)
+    {
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+            NSError *error = nil;
+
+            [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:[NSDictionary dictionary] error:&error];
+            if (error) {
+                [[NSAlert alertWithMessageText:@"You need to create a Scripts folder yourself" defaultButton:@"OK" alternateButton:@"No way!" otherButton:nil informativeTextWithFormat:@"Sorry, Mac OS X 10.7 cannot create a scripts folder automatically. This app cannot do it either because of the sandbox. Please create folder %@ yourself, and try again.", path] runModal];
             return;
+            }
         }
+    
+        [[NSWorkspace sharedWorkspace] selectFile:selectedScript.path inFileViewerRootedAtPath:path];
     }
-    [[NSWorkspace sharedWorkspace] selectFile:selectedScript.path inFileViewerRootedAtPath:path];
 }
 
 - (void)fileSystemMonitor:(FSMonitor *)monitor detectedChangeAtPathes:(NSSet *)pathes {

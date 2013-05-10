@@ -211,7 +211,10 @@
     BOOL rubyInUse = [[arguments componentsJoinedByString:@" "] rangeOfString:rubyPath].length > 0;
     if (rubyInUse && !rubyVersion.valid) {
         NSLog(@"Ruby version '%@' does not exist, refusing to run.", project.rubyVersionIdentifier);
-        *compilerOutput = [[ToolOutput alloc] initWithCompiler:self type:ToolOutputTypeError sourcePath:sourcePath line:0 message:@"Ruby not found. Please visit this project's compiler settings and choose another Ruby interpreter" output:@""];
+        if (compilerOutput != nil)
+        {
+            *compilerOutput = [[ToolOutput alloc] initWithCompiler:self type:ToolOutputTypeError sourcePath:sourcePath line:0 message:@"Ruby not found. Please visit this project's compiler settings and choose another Ruby interpreter" output:@""];
+        }
         return;
     }
 

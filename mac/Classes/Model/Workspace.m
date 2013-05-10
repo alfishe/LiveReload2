@@ -87,10 +87,14 @@ void C_workspace__set_monitoring_enabled(json_t *arg) {
         NSMutableDictionary *memento = [project memento];
         NSError *error = nil;
         NSString *bookmark = [[[NSURL fileURLWithPath:project.path] bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys:nil relativeToURL:nil error:&error] base64EncodedString];
+        
         [memento setObject:project.path forKey:@"path"];
-        [memento setObject:bookmark forKey:@"bookmark"];
+        if (bookmark != nil)
+            [memento setObject:bookmark forKey:@"bookmark"];
+        
         [projectMementos addObject:memento];
     }
+
     json_t *json = nodeapp_objc_to_json(projectMementos);
     char *dump = json_dumps(json, JSON_INDENT(2));
     [[NSData dataWithBytesNoCopy:dump length:strlen(dump) freeWhenDone:NO] writeToFile:dataFilePath options:NSDataWritingAtomic error:NULL];

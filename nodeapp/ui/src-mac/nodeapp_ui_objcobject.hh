@@ -29,6 +29,7 @@ public:
 
     ObjCObject(Class isa) {
         this->isa = isa;
+        
     }
 
     id self() {

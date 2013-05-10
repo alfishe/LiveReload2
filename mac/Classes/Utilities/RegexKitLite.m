@@ -1168,7 +1168,9 @@ static id rkl_performRegexOp(id self, SEL _cmd, RKLRegexOp regexOp, NSString *re
 exitNow:
   OSSpinLockUnlock(&rkl_cacheSpinLock);
   rkl_cacheSpinLockStatus |= RKLUnlockedCacheSpinLock; // Warning about rkl_cacheSpinLockStatus never being read can be safely ignored.
-
+  rkl_cacheSpinLockStatus = rkl_cacheSpinLockStatus;
+    
+    
   if(RKL_EXPECTED(status     > U_ZERO_ERROR, 0L) && RKL_EXPECTED(exception == NULL, 0L)) { exception = rkl_NSExceptionForRegex(regexString, options, NULL, status); } // If we had a problem, prepare an exception to be thrown.
   if(RKL_EXPECTED(exception != NULL,         0L))                                        { rkl_handleDelayedAssert(self, _cmd, exception);                          } // If there is an exception, throw it at this point.
   // If we're working on a mutable string and there were successful matches/replacements, then we still have work to do.

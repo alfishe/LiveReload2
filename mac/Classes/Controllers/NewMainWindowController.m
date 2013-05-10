@@ -838,7 +838,11 @@ void C_mainwnd__set_change_count(json_t *arg) {
 
 - (void)updateUserScripts {
     [_userScripts autorelease];
-    _userScripts = [[UserScriptManager sharedUserScriptManager].userScripts mutableCopy];
+    
+    NSArray* userScripts = [UserScriptManager sharedUserScriptManager].userScripts;
+    
+    if (userScripts != nil)
+        _userScripts = [userScripts mutableCopy];
 
     [customScriptPopUp removeAllItems];
 
